@@ -24,6 +24,12 @@ class Dataset:
         self.attributes_names = attributes_names
         self.target_name = target_name
         self.instances = []
+    
+    def getTargetName(self):
+        return self.target_name
+
+    def getAttributesNames(self):
+        return self.attributes_names
 
     def addInstance(self, attributes_values, target_value):
         self.instances.append(DatasetInstance(self.attributes_names, attributes_values, target_value))
