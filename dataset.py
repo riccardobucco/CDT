@@ -17,3 +17,16 @@ class DatasetInstance:
 
     def setTarget(self, target):
         self.target = target
+
+class Dataset:
+
+    def __init__(self, names, target):
+        self.names = names
+        self.target = target
+        self.instances = []
+
+    def addInstance(self, values, target):
+        self.instances.append(DatasetInstance(self.names, values, target))
+
+    def getInstance(self, index):
+        return self.instances[index]
