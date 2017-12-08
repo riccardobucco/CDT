@@ -30,3 +30,6 @@ class Dataset:
 
     def getInstance(self, index):
         return self.instances[index]
+
+    def __iter__(self):
+        return iter(self.instances)
