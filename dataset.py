@@ -1,32 +1,32 @@
 class DatasetInstance:
 
-    def __init__(self, names, values, target):
+    def __init__(self, attributes_names, attributes_values, target_value):
         self.attributes = {}
-        for index, name in enumerate(names):
-            self.attributes[name] = values[index]
-        self.target = target
+        for index, name in enumerate(attributes_names):
+            self.attributes[name] = attributes_values[index]
+        self.target_value = target_value
 
-    def getAttribute(self, name):
-        return self.attributes[name]
+    def getAttribute(self, attribute_name):
+        return self.attributes[attribute_name]
 
-    def setAttribute(self, name, value):
-        self.attributes[name] = value
+    def setAttribute(self, attribute_name, attribute_value):
+        self.attributes[attribute_name] = attribute_value
 
     def getTarget(self):
-        return self.target
+        return self.target_value
 
-    def setTarget(self, target):
-        self.target = target
+    def setTarget(self, target_value):
+        self.target_value = target_value
 
 class Dataset:
 
-    def __init__(self, names, target):
-        self.names = names
-        self.target = target
+    def __init__(self, attributes_names, target_name):
+        self.attributes_names = attributes_names
+        self.target_name = target_name
         self.instances = []
 
-    def addInstance(self, values, target):
-        self.instances.append(DatasetInstance(self.names, values, target))
+    def addInstance(self, attributes_values, target_value):
+        self.instances.append(DatasetInstance(self.attributes_names, attributes_values, target_value))
 
     def getInstance(self, index):
         return self.instances[index]
