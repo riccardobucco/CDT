@@ -1,6 +1,6 @@
 class DatasetInstance:
 
-    def __init(self, names, values, target):
+    def __init__(self, names, values, target):
         self.attributes = {}
         for index, name in enumerate(names):
             self.attributes[name] = values[index]
