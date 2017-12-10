@@ -28,6 +28,14 @@ class Dataset:
     def getTargetName(self):
         return self.target_name
 
+    def getSetOfTargets(self):
+        return set([instance.getTarget() for instance in self])
+
+    def countInstances(self, target = None):
+        if target is None:
+            return len([instance for instance in self])
+        return len([instance for instance in self if instance.getTarget() is target])
+
     def getAttributesNames(self):
         return self.attributes_names
 
