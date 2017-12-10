@@ -31,10 +31,14 @@ class Dataset:
     def getSetOfTargets(self):
         return set([instance.getTarget() for instance in self])
 
-    def countInstances(self, target = None):
-        if target is None:
-            return len([instance for instance in self])
-        return len([instance for instance in self if instance.getTarget() is target])
+    def countInstances(self, target = None, attribute = None):
+        # attribute = {name: name, value: value}
+        instances = [instance for instance in self]
+        if target is not None:
+            instances = [instance for instance in instances if instance.getTarget() is target]
+        if attribute is not None:
+            instances = [instance for instance in instances if instance.getAttribute(attribute["name"]) is attribute["value"]]
+        return len(instances)
 
     def getAttributesNames(self):
         return self.attributes_names
