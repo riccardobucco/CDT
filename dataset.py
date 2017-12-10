@@ -31,6 +31,9 @@ class Dataset:
     def getSetOfTargets(self):
         return set([instance.getTarget() for instance in self])
 
+    def getSetOfAttributeValues(self, attribute_name):
+        return set([instance.getAttribute(attribute_name) for instance in self])
+
     def countInstances(self, target = None, attribute = None):
         # attribute = {name: name, value: value}
         instances = [instance for instance in self]
