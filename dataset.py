@@ -125,3 +125,35 @@ class Dataset:
         if attribute is not None:
             instances = [instance for instance in instances if instance.getAttribute(attribute["name"]) is attribute["value"]]
         return instances
+
+# UTILITY FUNCTIONS
+def copy_dataset(dataset, target = None, attribute = None):
+    """
+    Return a copy of the dataset, taking into account only the instances that satisfy certain constraints (Dataset)
+
+    Parameters:
+        - target: the value of the target, default to None (value)
+        - attribute: object with name of an attribute and the related value, default to None ({"name": String, "value": value})
+    """
+    instances = dataset._getInstances(target = target, attribute = attribute)
+    attributes_names = [attribute_name for attribute_name in dataset.getAttributesNames()]
+    if attribute is not None:
+        attributes_names.remove(attribute["name"])
+    new_dataset = Dataset(attributes_names, dataset.getTargetName())
+    for instance in instances:
+        new_dataset.addInstance(_copy_instance(instance, attributes_names))    
+    return new_dataset
+
+# PRIVATE FUNCTIONS
+# These functions should not be used outside the module
+def _copy_instance(instance, attributes_names):
+    """
+    Return a copy of the DatasetInstance, taking into account only some attributes names
+
+    Parameters:
+        - attributes_names: list of attributes names (list of Strings)
+    """
+    new_instance = DatasetInstance([], [], instance.getTarget())
+    for attribute_name in attributes_names:
+        new_instance.attributes[attribute_name] = instance.attributes[attribute_name]
+    return new_instance
