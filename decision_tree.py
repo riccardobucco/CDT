@@ -1,21 +1,58 @@
-class DecisionTree:
-
-    # COSTRUCTOR
-    def __init__(self, splitting_attribute = None, target = None):
-        self.splitting_attribute = splitting_attribute
-        self.target = target
+class DecisionNode:
+    
+    # CONSTRUCTOR
+    def __init__(self, decision_attribute_name):
+        """
+        Build a new DecisionNode
+        
+        Parameters:
+            - decision_attribute_name: the name of the attribute on which the decision have to be taken (String)
+        """
+        self.decision_attribute_name = decision_attribute_name
         self.children = {}
 
     # GETTERS
-    def getSplittingAttribute(self):
-        return self.splitting_attribute
-
-    def getTarget(self):
-        return self.target
-
-    def getChild(self, attribute_value):
-        return self.children[attribute_value]
+    def getDecisionAttribute(self):
+        """
+        Return the attribute that determines which path you should be taken (String)
+        """
+        return self.decision_attribute
+    
+    def getChild(self, decision_attribute_value):
+        """
+        Return the child node associated to the decision attribute value (DecisionNode or EndNode)
+        
+        Parameters:
+            - decision_attribute_value: the decision attribute value to which the child node is associated
+        """
+        return self.children[decision_attribute_value]
 
     # SETTERS
-    def addChild(self, attribute_value, node):
-        self.children[attribute_value] = node
+    def addChild(self, decision_attribute_value, node):
+        """
+        Associate a new child to a given attribute value
+        
+        Parameters:
+            - decision_attribute_value: the attribute value to which the child node has to be associated (value)
+            - node: the child node (DecisionNode or EndNode)
+        """
+        self.children[decision_attribute_value] = node
+
+
+class EndNode:
+    
+    # CONSTRUCTOR
+    def __init__(self, target_value):
+        """
+        Build a new EndNode
+        
+        Parameters:
+            - target_value: the target associated to the end node (value)
+        """
+        self.target_value = target_value
+    
+    def getTargetValue(self):
+        """
+        Return the target associated to the end node (value)
+        """
+        return self.target_value
