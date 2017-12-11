@@ -3,7 +3,7 @@ import csv
 from dataset import Dataset, DatasetInstance
 
 
-def get_dataset(filename, target_name):
+def getDataset(filename, target_name):
     """
     Return a Dataset, using the data in the CSV file (Dataset)
     
@@ -17,3 +17,9 @@ def get_dataset(filename, target_name):
     for row in csv_reader:
         dataset.addInstance([row[attribute_name] for attribute_name in attributes_names], row[target_name])
     return dataset
+
+def exportGraphviz(filename, decision_tree):
+    """
+    
+    """
+    

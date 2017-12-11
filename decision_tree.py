@@ -19,7 +19,7 @@ class DecisionNode:
         """
         Return the attribute that determines which path you should be taken (String)
         """
-        return self.decision_attribute
+        return self.decision_attribute_name
     
     def getChild(self, decision_attribute_value):
         """

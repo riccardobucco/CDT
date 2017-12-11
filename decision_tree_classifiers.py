@@ -38,8 +38,8 @@ def classify(decision_tree, instance):
     """
     if type(decision_tree) is EndNode:
         return decision_tree.getTargetValue()
-    decision_attribute = decision_tree.getDecisionAttribute()
-    return classify(decision_tree.getChild(decision_attribute), instance)
+    decision_attribute_name = decision_tree.getDecisionAttribute()
+    return classify(decision_tree.getChild(instance.getAttributeValue(decision_attribute_name)), instance)
         
 
 # PRIVATE FUNCTIONS
