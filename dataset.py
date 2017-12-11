@@ -4,19 +4,32 @@ from collections import Counter
 class DatasetInstance:
 
     # CONSTRUCTOR
-    def __init__(self, attributes_names, attributes_values, target_value):
+    def __init__(self, attributes_names, attributes_values, target_name, target_value):
         """
         Build a new instance
 
         Parameters:
             - attributes_names: names of the attributes (list of Strings)
             - attributes_values: values of the attributes (list of values)
+            - target_name: the name of the target (String)
             - target_value: target value (value)
         """
         self.attributes = {}
         for index, name in enumerate(attributes_names):
             self.attributes[name] = attributes_values[index]
+        self.target_name = target_name
         self.target_value = target_value
+    
+    # OBJECT REPRESENTATION
+    def __repr__(self):
+        """
+        Return a printable representation of the object (String)
+        """
+        instance_representation = ""
+        for attribute_name in self.attributes.keys():
+            instance_representation += str(attribute_name) + "=" + str(self.attributes[attribute_name]) + ","
+        instance_representation += str(self.target_name) + "(target)=" + str(self.target_value)
+        return instance_representation
 
     # GETTERS
     def getAttributeValue(self, attribute_name):
@@ -49,6 +62,16 @@ class Dataset:
         self.attributes_names = attributes_names
         self.target_name = target_name
         self.instances = []
+    
+    # OBJECT REPRESENTATION
+    def __repr__(self):
+        """
+        Return a printable representation of the object (String)
+        """
+        dataset_representation = ""
+        for index, instance in enumerate(self):
+            dataset_representation += "(" + str(index) + ") " + instance.__repr__() + "\n"
+        return dataset_representation
 
     # ITERATOR
     def __iter__(self):
