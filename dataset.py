@@ -44,6 +44,12 @@ class DatasetInstance:
         """
         return self.attributes[attribute_name]
 
+    def getTargetName(self):
+        """
+        Return the name of the target (String)
+        """
+        return self.target_name
+
     def getTargetValue(self):
         """
         Return the value of the target (value)
@@ -121,13 +127,13 @@ class Dataset:
         """
         Return a set of all the target values in the dataset (set of values)
         """
-        return set([instance.getTarget() for instance in self])
+        return set([instance.getTargetValue() for instance in self])
     
     def getMostCommonTarget(self):
         """
         Return the most common target value in the dataset (value)
         """
-        return Counter([instance.getTarget() for instance in self]).most_common(1)[0][0]       
+        return Counter([instance.getTargetValue() for instance in self]).most_common(1)[0][0]       
 
     def getAttributeValues(self, attribute_name):
         """
@@ -136,7 +142,7 @@ class Dataset:
         Parameters:
             - attribute_name: the name of the attribute (String)
         """
-        return set([instance.getAttribute(attribute_name) for instance in self])
+        return set([instance.getAttributeValue(attribute_name) for instance in self])
 
     def countInstances(self, target = None, attribute = None):
         """
@@ -160,9 +166,9 @@ class Dataset:
         """
         instances = [instance for instance in self]
         if target is not None:
-            instances = [instance for instance in instances if instance.getTarget() is target]
+            instances = [instance for instance in instances if instance.getTargetValue() is target]
         if attribute is not None:
-            instances = [instance for instance in instances if instance.getAttribute(attribute["name"]) is attribute["value"]]
+            instances = [instance for instance in instances if instance.getAttributeValue(attribute["name"]) is attribute["value"]]
         return instances
 
 
@@ -181,19 +187,5 @@ def copy_dataset(dataset, target = None, attribute = None):
         attributes_names.remove(attribute["name"])
     new_dataset = Dataset(attributes_names, dataset.getTargetName())
     for instance in instances:
-        new_dataset.addInstance(_copy_instance(instance, attributes_names))    
+        new_dataset.addInstance([instance.getAttributeValue(attribute_name) for attribute_name in attributes_names], instance.getTargetValue())    
     return new_dataset
-
-# PRIVATE FUNCTIONS
-# These functions should not be used outside the module
-def _copy_instance(instance, attributes_names):
-    """
-    Return a copy of the DatasetInstance, taking into account only some attributes names
-
-    Parameters:
-        - attributes_names: list of attributes names (list of Strings)
-    """
-    new_instance = DatasetInstance([], [], instance.getTarget())
-    for attribute_name in attributes_names:
-        new_instance.attributes[attribute_name] = instance.attributes[attribute_name]
-    return new_instance

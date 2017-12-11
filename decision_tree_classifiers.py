@@ -14,9 +14,9 @@ def ID3(dataset):
         - dataset: the dataset used to train the classifier
     """
     if len(dataset.getTargetValues()) is 1:
-        return DecisionTree(dataset.getTargetName(), dataset.getInstance(0).getTargetValue())
+        return EndNode(dataset.getInstance(0).getTargetValue())
     if len(dataset.getAttributesNames()) is 0:
-        return DecisionTree(dataset.getTargetName(), dataset.getMostCommonTarget())
+        return EndNode(dataset.getMostCommonTarget())
     best_attribute = _getBestAttribute(dataset)
     decision_node = DecisionNode(best_attribute)
     for attribute_value in dataset.getAttributeValues(best_attribute):
@@ -83,7 +83,7 @@ def _informationGain(dataset, attribute_name):
         - attribute_name: the name of the attribute with which the information gain has to be computed (String)
     """
     T = set()
-    attribute_values = dataset.getAttributesNames(attribute_name)
+    attribute_values = dataset.getAttributeValues(attribute_name)
     for attribute_value in attribute_values:
         t = copy_dataset(dataset, attribute = {"name": attribute_name, "value": attribute_value})
         T.add(t)
