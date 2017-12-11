@@ -100,14 +100,15 @@ class Dataset:
         return self.instances[index]
 
     # SETTERS
-    def addInstance(self, instance):
+    def addInstance(self, attributes_values, target_value):
         """
         Add a new instance to the dataset
 
         Parameters:
-            - instance: the instance that has to be added to the dataset (DatasetInstance)
+            - attributes_values: values of the attributes (list of values)
+            - target_value: target value (value)
         """
-        self.instances.append(instance)
+        self.instances.append(DatasetInstance(self.attributes_names, attributes_values, self.target_name, target_value))
 
     # AGGREGATORS
     def getTargetValues(self):
