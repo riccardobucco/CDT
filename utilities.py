@@ -15,7 +15,7 @@ def informationGain(dataset, attribute_name):
     """
     Return the measure of the difference in entropy from before to after the dataset is split on the
     given attribute (in other words, how much uncertainty in the dataset was reduced after splitting
-    the dataset on the given attribute)
+    the dataset on the given attribute) (number)
     
     Parameters:
         - dataset: the dataset on which the information gain has to be computed (Dataset)
