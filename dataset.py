@@ -1,5 +1,6 @@
 from collections import Counter
 
+
 class DatasetInstance:
 
     # CONSTRUCTOR
@@ -18,7 +19,7 @@ class DatasetInstance:
         self.target_value = target_value
 
     # GETTERS
-    def getAttribute(self, attribute_name):
+    def getAttributeValue(self, attribute_name):
         """
         Return the value related to the specified attribute (value)
 
@@ -27,7 +28,7 @@ class DatasetInstance:
         """
         return self.attributes[attribute_name]
 
-    def getTarget(self):
+    def getTargetValue(self):
         """
         Return the value of the target (value)
         """
