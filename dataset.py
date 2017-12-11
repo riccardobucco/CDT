@@ -1,3 +1,5 @@
+from collections import Counter
+
 class DatasetInstance:
 
     # CONSTRUCTOR
@@ -84,13 +86,19 @@ class Dataset:
         self.instances.append(instance)
 
     # AGGREGATORS
-    def getTargets(self):
+    def getTargetValues(self):
         """
         Return a set of all the target values in the dataset (set of values)
         """
         return set([instance.getTarget() for instance in self])
+    
+    def getMostCommonTarget(self):
+        """
+        Return the most common target value in the dataset (value)
+        """
+        return Counter([instance.getTarget() for instance in self]).most_common(1)[0][0]       
 
-    def getAttributes(self, attribute_name):
+    def getAttributeValues(self, attribute_name):
         """
         Return a set of all the values that a specified attribute has in the dataset (set of values)
 
@@ -125,6 +133,7 @@ class Dataset:
         if attribute is not None:
             instances = [instance for instance in instances if instance.getAttribute(attribute["name"]) is attribute["value"]]
         return instances
+
 
 # UTILITY FUNCTIONS
 def copy_dataset(dataset, target = None, attribute = None):

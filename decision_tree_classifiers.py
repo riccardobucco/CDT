@@ -1,13 +1,9 @@
 from __future__ import division
-from collections import Counter
 from math import log
 
 from dataset import Dataset, DatasetInstance, copy_dataset
 from decision_tree import DecisionTree
 
-
-def getMostCommonTarget(dataset):
-    return Counter([instance.getTarget() for instance in dataset]).most_common(1)[0][0]
 
 def entropy(dataset):
     n_of_instances = dataset.countInstances()
