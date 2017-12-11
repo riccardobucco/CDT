@@ -1,22 +1,7 @@
-from __future__ import division
-from math import log
-
 from dataset import Dataset, DatasetInstance, copy_dataset
-from decision_tree import DecisionTree
+from decision_tree import DecisionNode, EndNode
+from utilities import informationGain
 
-
-def entropy(dataset):
-    n_of_instances = dataset.countInstances()
-    proportions = [dataset.countInstances(target = target)/n_of_instances for target in dataset.getTargets()]
-    return sum(-p*log(p, 2) for p in proportions)
-
-def informationGain(dataset, attribute_name):
-    T = set()
-    attribute_values = dataset.getAttributes(attribute_name)
-    for attribute_value in attribute_values:
-        t = copy_dataset(dataset, attribute = {"name": attribute_name, "value": attribute_value})
-        T.add(t)
-    return entropy(dataset) - sum(entropy(t)*t.countInstances()/dataset.countInstances() for t in T)
 
 def getBestAttribute(dataset):
     attributes_names = dataset.getAttributesNames()
