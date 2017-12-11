@@ -26,6 +26,20 @@ def ID3(dataset):
             decision_node.addChild(attribute_value, child)
     return decision_node
 
+def classify(decision_tree, instance):
+    """
+    Return the target value that the decision tree associates to the given instance (value)
+    
+    Parameters:
+        - decision_tree: decision tree that determines which target is associated to the instance (DecisionNode or EndNode)
+        - instance: the instance that has to be classified (DatasetInstance)
+    """
+    if type(decision_tree) is EndNode:
+        return decision_tree.getTargetValue()
+    decision_attribute = decision_tree.getDecisionAttribute()
+    return classify(decision_tree.getChild(decision_attribute), instance)
+        
+
 # PRIVATE FUNCTIONS
 # These functions should not be used outside the module
 def _getBestAttribute(dataset):
