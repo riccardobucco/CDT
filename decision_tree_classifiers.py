@@ -3,7 +3,6 @@ from math import log
 
 from dataset import copy_dataset
 from decision_tree import DecisionNode, EndNode
-from utilities import informationGain
 
 
 # PUBLIC FUNCTIONS
