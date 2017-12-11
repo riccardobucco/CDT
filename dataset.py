@@ -2,6 +2,9 @@ from collections import Counter
 
 
 class DatasetInstance:
+    """
+    Class that represents an instance of a dataset
+    """
 
     # CONSTRUCTOR
     def __init__(self, attributes_names, attributes_values, target_name, target_value):
@@ -49,6 +52,9 @@ class DatasetInstance:
 
 
 class Dataset:
+    """
+    Class that represents a dataset
+    """
 
     # CONSTRUCTOR
     def __init__(self, attributes_names, target_name):

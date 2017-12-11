@@ -1,4 +1,7 @@
 class DecisionNode:
+    """
+    Class that represents a decision node of a decision tree
+    """
     
     # CONSTRUCTOR
     def __init__(self, decision_attribute_name):
@@ -40,6 +43,7 @@ class DecisionNode:
 
 
 class EndNode:
+    """Class that represents an end node (leaf) of a decision tree"""
     
     # CONSTRUCTOR
     def __init__(self, target_value):
