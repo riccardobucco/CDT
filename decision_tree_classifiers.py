@@ -50,7 +50,7 @@ def ID3(dataset, max_features = None):
             decision_node.addChild(attribute_value, child)
     return decision_node
 
-def classify(decision_tree, instance):
+def tree_classify(decision_tree, instance):
     """
     Return the target value that the decision tree associates to the given instance (value)
     
@@ -61,8 +61,46 @@ def classify(decision_tree, instance):
     if type(decision_tree) is EndNode:
         return decision_tree.getTargetValue()
     decision_attribute_name = decision_tree.getDecisionAttribute()
-    return classify(decision_tree.getChild(instance.getAttributeValue(decision_attribute_name)), instance)
-        
+    return tree_classify(decision_tree.getChild(instance.getAttributeValue(decision_attribute_name)), instance)
+
+def random_forest_classify(forest, instance):
+    """
+    Return the target value that the random forest associates to the given instance (value)
+    
+    Parameters:
+        - forest: random forest that determines which target is associated to the instance (List of DecisionNode or EndNode)
+        - instance: the instance that has to be classified (DatasetInstance)
+    """
+    targets = {}
+    for decision_tree in forest:
+        target_value = tree_classify(decision_tree, instance)
+        if targets.has_key(target_value):
+            targets[target_value] += 1
+        else:
+            targets[target_value] = 1
+    return max(targets, key=targets.get)
+
+def getFeatureImportances(forest):
+    """
+    Return an ordered list of features used in the forest, according to its importance
+
+    Parameters:
+        - forst: random forest from which the importance of the features can be estimated
+    """
+    features = {}
+    def _getFeatureImportances(decision_tree):
+        if type(decision_tree) is EndNode:
+            return
+        if features.has_key(decision_tree.getDecisionAttribute()):
+            features[decision_tree.getDecisionAttribute()] += 1
+        else:
+            features[decision_tree.getDecisionAttribute()] = 1
+        for decision_attribute_value in decision_tree.children.keys():
+            _getFeatureImportances(decision_tree.getChild(decision_attribute_value))
+    for decision_tree in forest:
+        _getFeatureImportances(decision_tree)
+    return sorted(features, key=features.get, reverse=True)
+
 
 # PRIVATE FUNCTIONS
 # These functions should not be used outside the module
