@@ -24,8 +24,8 @@ def exportGraphviz(filename, decision_tree):
     Print on the output file info about a tree using the DOT language
 
     Parameters:
-        - filename: name of the file where the content must be written
-        - decision_tree: the tree that has to be represented using the DOT language
+        - filename: name of the file where the content must be written (String)
+        - decision_tree: the tree that has to be represented using the DOT language (DecisionNode or EndNode)
     """
     # This function is private and should not be used outside the scope of the parent function
     def _exportNode(node, output):
