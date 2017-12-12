@@ -1,7 +1,7 @@
 from collections import Counter
 
 
-class DatasetInstance:
+class DatasetInstance(object):
     """
     Class that represents an instance of a dataset
     """
@@ -57,7 +57,7 @@ class DatasetInstance:
         return self.target_value
 
 
-class Dataset:
+class Dataset(object):
     """
     Class that represents a dataset
     """

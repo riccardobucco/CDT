@@ -1,4 +1,4 @@
-class DecisionNode:
+class DecisionNode(object):
     """
     Class that represents a decision node of a decision tree
     """
@@ -42,7 +42,7 @@ class DecisionNode:
         self.children[decision_attribute_value] = node
 
 
-class EndNode:
+class EndNode(object):
     """Class that represents an end node (leaf) of a decision tree"""
     
     # CONSTRUCTOR
