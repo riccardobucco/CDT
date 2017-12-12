@@ -1,11 +1,32 @@
 from __future__ import division
 from math import log
+from random import randint
 
-from dataset import copy_dataset
+from dataset import copy_dataset, Dataset
 from decision_tree import DecisionNode, EndNode
 
 
 # PUBLIC FUNCTIONS
+def random_forest(dataset, n_of_trees):
+    """
+    Return a list of decision trees, built using random samples of the dataset
+
+    Parameters:
+        - dataset: the dataset used to train the classifier
+        - n_of_trees: the number of trees that have to be trained
+    """
+    forest = []
+    for i in range(0,n_of_trees):
+        random_dataset = Dataset(dataset.getAttributesNames(), dataset.getTargetName())
+        for j in range(0,dataset.countInstances()):
+            random_instance = dataset.getInstance(randint(0,dataset.countInstances()-1))
+            attributes_values = [random_instance.getAttributeValue(attribute_name) for attribute_name in dataset.getAttributesNames()]
+            target_value = random_instance.getTargetValue()
+            random_dataset.addInstance(attributes_values, target_value)
+        print(random_dataset)
+        forest.append(ID3(random_dataset))
+    return forest
+
 def ID3(dataset):
     """
     Return a decision tree classifier, computed using the ID3 algorithm (DecisionNode or EndNode)
