@@ -166,9 +166,9 @@ class Dataset(object):
         """
         instances = [instance for instance in self]
         if target is not None:
-            instances = [instance for instance in instances if instance.getTargetValue() is target]
+            instances = [instance for instance in instances if instance.getTargetValue() == target]
         if attribute is not None:
-            instances = [instance for instance in instances if instance.getAttributeValue(attribute["name"]) is attribute["value"]]
+            instances = [instance for instance in instances if instance.getAttributeValue(attribute["name"]) == attribute["value"]]
         return instances
 
 
