@@ -76,7 +76,7 @@ def tree_classify(decision_tree, instance):
     if isinstance(decision_tree, EndNode):
         return decision_tree.get_target_value()
     decision_attribute_name = decision_tree.get_decision_attribute()
-    if decision_tree.children.has_key(instance.get_attribute_value(decision_attribute_name)) is False:
+    if instance.get_attribute_value(decision_attribute_name) not in decision_tree.children:
         return None
     return tree_classify(decision_tree.get_child(instance.get_attribute_value(decision_attribute_name)), instance)
 
