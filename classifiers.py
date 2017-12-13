@@ -64,7 +64,7 @@ def get_accuracy(dataset, predictions):
     return sum([1 for index, instance in enumerate(dataset)
                 if predictions[index] == dataset.get_instance(index).get_target_value()])/dataset.count_instances()
 
-def tree_classify(decision_tree, instance):
+def id3_classify(decision_tree, instance):
     """
     Return the target value that the decision tree associates to the given instance (value)
 
@@ -78,7 +78,7 @@ def tree_classify(decision_tree, instance):
     decision_attribute_name = decision_tree.get_decision_attribute()
     if instance.get_attribute_value(decision_attribute_name) not in decision_tree.children:
         return None
-    return tree_classify(decision_tree.get_child(instance.get_attribute_value(decision_attribute_name)), instance)
+    return id3_classify(decision_tree.get_child(instance.get_attribute_value(decision_attribute_name)), instance)
 
 def random_forest_classify(forest, dataset):
     """
@@ -93,7 +93,7 @@ def random_forest_classify(forest, dataset):
     def _classify_instance(forest, instance):
         targets = {}
         for decision_tree in forest:
-            target_value = tree_classify(decision_tree, instance)
+            target_value = id3_classify(decision_tree, instance)
             if target_value in targets:
                 targets[target_value] += 1
             else:

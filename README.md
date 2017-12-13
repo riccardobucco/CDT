@@ -42,7 +42,7 @@ The `classifiers.py` file contains the main functions:
   - *forest*: Random forest that determines which target is associated to the instance
   - *dataset*: Dataset used to train the classifier.
 
-- **tree_classify**(*forest*, *dataset*)
+- **id3_classify**(*forest*, *dataset*)
 
   Return the target value that the decision tree associates to the given instance.
   
