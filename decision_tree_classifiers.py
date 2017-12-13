@@ -35,20 +35,30 @@ def ID3(dataset, max_features = None):
         - dataset: the dataset used to train the classifier (Dataset)
         - max_features: the number of features to consider when looking for the best split (number)
     """
-    if len(dataset.getTargetValues()) is 1:
+    if len(dataset.getTargetValues()) == 1:
         return EndNode(dataset.getInstance(0).getTargetValue())
-    if len(dataset.getAttributesNames()) is 0:
+    if len(dataset.getAttributesNames()) == 0:
         return EndNode(dataset.getMostCommonTarget())
     best_attribute = _getBestAttribute(dataset, max_features)
     decision_node = DecisionNode(best_attribute)
     for attribute_value in dataset.getAttributeValues(best_attribute):
-        if dataset.countInstances(attribute = {"name": best_attribute, "value": attribute_value}) is 0:
+        if dataset.countInstances(target = None, attribute = {"name": best_attribute, "value": attribute_value}) == 0:
             child = EndNode(dataset.getMostCommonTarget())
             decision_node.addChild(attribute_value, child)
         else:
             child = ID3(copy_dataset(dataset, attribute = {"name": best_attribute, "value": attribute_value}), max_features)
             decision_node.addChild(attribute_value, child)
     return decision_node
+
+def getAccuracy(dataset, predictions):
+    """
+    Return the accuracy of the predictions (number)
+
+    Parameters:
+        - dataset: the dataset containing all the instances correctly classified (Dataset)
+        - predictions: a list of targets related to the instances of the dataset (List of values)
+    """
+    return sum([1 for index, instance in enumerate(dataset) if predictions[index] == dataset.getInstance(index).getTargetValue()])/dataset.countInstances()
 
 def tree_classify(decision_tree, instance):
     """
@@ -61,24 +71,32 @@ def tree_classify(decision_tree, instance):
     if type(decision_tree) is EndNode:
         return decision_tree.getTargetValue()
     decision_attribute_name = decision_tree.getDecisionAttribute()
+    if decision_tree.children.has_key(instance.getAttributeValue(decision_attribute_name)) is False:
+        return None
     return tree_classify(decision_tree.getChild(instance.getAttributeValue(decision_attribute_name)), instance)
 
-def random_forest_classify(forest, instance):
+def random_forest_classify(forest, dataset):
     """
-    Return the target value that the random forest associates to the given instance (value)
+    Return the target values that the random forest associates to the given dataset (List ofvalue)
     
     Parameters:
         - forest: random forest that determines which target is associated to the instance (List of DecisionNode or EndNode)
-        - instance: the instance that has to be classified (DatasetInstance)
+        - dataset: the dataset that has to be classified (DatasetInstance)
     """
-    targets = {}
-    for decision_tree in forest:
-        target_value = tree_classify(decision_tree, instance)
-        if targets.has_key(target_value):
-            targets[target_value] += 1
-        else:
-            targets[target_value] = 1
-    return max(targets, key=targets.get)
+    # This function is private and should not be used outside the scope of the parent function
+    def _classify_instance(forest, instance):
+        targets = {}
+        for decision_tree in forest:
+            target_value = tree_classify(decision_tree, instance)
+            if targets.has_key(target_value):
+                targets[target_value] += 1
+            else:
+                targets[target_value] = 1
+        return max(targets, key=targets.get)
+    predictions = []
+    for instance in dataset:
+        predictions.append(_classify_instance(forest, instance))
+    return predictions
 
 def getFeatureImportances(forest):
     """
@@ -88,6 +106,7 @@ def getFeatureImportances(forest):
         - forst: random forest from which the importance of the features can be estimated
     """
     features = {}
+    # These functions should not be used outside the scope of the parent function
     def _getFeatureImportances(decision_tree):
         if type(decision_tree) is EndNode:
             return
@@ -99,7 +118,7 @@ def getFeatureImportances(forest):
             _getFeatureImportances(decision_tree.getChild(decision_attribute_value))
     for decision_tree in forest:
         _getFeatureImportances(decision_tree)
-    return sorted(features, key=features.get, reverse=True)
+    return [(feature, features[feature]) for feature in sorted(features, key=features.get, reverse=True)]
 
 
 # PRIVATE FUNCTIONS
