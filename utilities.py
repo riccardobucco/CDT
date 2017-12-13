@@ -1,23 +1,35 @@
 import csv
+from random import sample
 
 from dataset import Dataset, DatasetInstance
 from decision_tree import EndNode, DecisionNode
 
 
-def getDataset(filename, target_name):
+def getDataset(filename, target_name, training_fraction):
     """
     Return a Dataset, using the data in the CSV file (Dataset)
     
     Parameters:
         - filename: name of the file that contains the data (String)
         - target_name: name of the target in the csv file
+        - training_fraction: The fraction of records reserved for the training dataset (number)
     """
     csv_reader = csv.DictReader(open(filename))
     attributes_names = [attribute_name for attribute_name in csv_reader.fieldnames if attribute_name != target_name]
-    dataset = Dataset(attributes_names, target_name)
+    train_dataset = Dataset(attributes_names, target_name)
+    test_dataset = Dataset(attributes_names, target_name)
+    instances = []
     for row in csv_reader:
-        dataset.addInstance([row[attribute_name] for attribute_name in attributes_names], row[target_name])
-    return dataset
+        instances.append(([row[attribute_name] for attribute_name in attributes_names], row[target_name]))
+    all_instances_indexes = set(range(0, len(instances)))
+    number_of_training_instances = int(len(all_instances_indexes) * training_fraction)
+    training_instances_indexes = set(sample(all_instances_indexes, number_of_training_instances))
+    test_instances_indexes = all_instances_indexes.difference(training_instances_indexes)
+    for instance_index in training_instances_indexes:
+        train_dataset.addInstance(instances[instance_index][0], instances[instance_index][1])
+    for instance_index in test_instances_indexes:
+        test_dataset.addInstance(instances[instance_index][0], instances[instance_index][1])
+    return train_dataset, test_dataset
 
 def exportGraphviz(filename, decision_tree):
     """
